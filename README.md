@@ -131,7 +131,7 @@ price
 Clone the repository
 
 ```bash
-git clone <https://github.com/eMohan07/house-price-prediction.git>
+git clone https://github.com/eMohan07/house-price-prediction.git
 ```
 
 Move into the project
@@ -154,27 +154,6 @@ streamlit run app.py
 
 ---
 
-## 📸 Application
-
-Add screenshots of:
-
-- Home Page
-- Input Form
-- Prediction Result
-
-inside an `assets/` folder and update this section later.
-
----
-
-## 🔮 Future Improvements
-
-- Support more regression models
-- Automatic hyperparameter tuning
-- Model comparison dashboard
-- Cloud deployment
-- API integration
-
----
 
 ## 👨‍💻 Author
 
