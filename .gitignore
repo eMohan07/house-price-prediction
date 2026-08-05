@@ -1,23 +1,20 @@
 # Virtual Environment
 .venv/
+venv/
 
-# Python cache
+# Python
 __pycache__/
-*.py[cod]
+*.pyc
 
 # Jupyter
 .ipynb_checkpoints/
 
-# Model files
-model.pkl
-*.joblib
-
-# Environment variables
-.env
-
-# OS files
-.DS_Store
-Thumbs.db
-
 # VS Code
 .vscode/
+
+# Streamlit Cache
+.streamlit/
+
+# OS Files
+.DS_Store
+Thumbs.db

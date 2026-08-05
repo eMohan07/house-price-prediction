@@ -1,0 +1,22 @@
+CITIES = [
+    "Seattle",
+    "Bellevue",
+    "Renton",
+    "Redmond",
+    "Kent",
+    "Auburn",
+    "Issaquah",
+    "Sammamish",
+    "Federal Way",
+    "Shoreline",
+    "Kirkland",
+    "Mercer Island",
+    "Woodinville",
+    "Maple Valley",
+    "Burien",
+    "SeaTac",
+    "Kenmore",
+    "Bothell",
+    "Covington",
+    "Snoqualmie"
+]

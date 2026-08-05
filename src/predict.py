@@ -1,15 +1,15 @@
-from pathlib import Path
 import joblib
+from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-MODEL_PATH = BASE_DIR / "models" / "house_price_model.pkl"
+PIPELINE_PATH = BASE_DIR / "models" / "house_price_pipeline.pkl"
 
 
-def load_model():
-    return joblib.load(MODEL_PATH)
+def load_pipeline():
+    return joblib.load(PIPELINE_PATH)
 
 
-def predict_price(input_data):
-    model = load_model()
-    prediction = model.predict(input_data)
-    return prediction[0]
+def predict_price(input_df):
+    pipeline = load_pipeline()
+    prediction = pipeline.predict(input_df)[0]
+    return max(0, round(prediction))
