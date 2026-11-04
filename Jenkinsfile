@@ -26,7 +26,7 @@ pipeline {
                         sh 'pip install -r requirements.txt pytest flake8'
                     } else {
                         bat 'python -m pip install --upgrade pip'
-                        bat 'pip install -r requirements.txt pytest flake8'
+                        bat 'python -m pip install -r requirements.txt pytest flake8'
                     }
                 }
             }
@@ -41,7 +41,7 @@ pipeline {
                         sh 'flake8 src tests app.py --count --select=E9,F63,F7,F82 --show-source --statistics || true'
                     } else {
                         bat 'python -m py_compile app.py src/constants.py src/predict.py src/train.py src/utils.py tests/test_prediction.py'
-                        bat 'flake8 src tests app.py --count --select=E9,F63,F7,F82 --show-source --statistics || ver>nul'
+                        bat 'python -m flake8 src tests app.py --count --select=E9,F63,F7,F82 --show-source --statistics || ver>nul'
                     }
                 }
             }
