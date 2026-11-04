@@ -80,13 +80,14 @@ pipeline {
                     if (isUnix()) {
                         sh 'ansible-playbook -i ansible/inventory.ini ansible/deploy.yml --extra-vars "image_tag=latest"'
                     } else {
-                        // On Windows nodes with native or WSL Ansible:
-                        bat '''
-                            where ansible-playbook >nul 2>nul && (
+                        bat '''@echo off
+                            where ansible-playbook >nul 2>nul
+                            if %ERRORLEVEL% EQU 0 (
+                                echo Executing Ansible Playbook...
                                 ansible-playbook -i ansible/inventory.ini ansible/deploy.yml --extra-vars "image_tag=latest"
-                            ) || (
-                                echo Native ansible-playbook not detected on Windows host. Running container deployment fallback... &&
-                                docker rm -f house-price-predictor 2>nul || ver>nul &&
+                            ) else (
+                                echo Native ansible-playbook not detected on Windows host. Running container deployment fallback...
+                                docker rm -f house-price-predictor 2>nul || ver>nul
                                 docker run -d --name house-price-predictor -p 8501:8501 --restart unless-stopped house-price-predictor:latest
                             )
                         '''
@@ -113,8 +114,16 @@ pipeline {
                             exit 1
                         '''
                     } else {
-                        bat '''
-                            powershell -Command "for ($i = 1; $i -le 12; $i++) { try { $response = Invoke-RestMethod -Uri 'http://localhost:8501/_stcore/health' -TimeoutSec 3; if ($response -eq 'ok') { Write-Host 'Application is Healthy and reachable!'; exit 0 } } catch { Write-Host ('Awaiting application initialization... (' + $i + '/12)'); Start-Sleep -Seconds 5 } }; Write-Error 'Application health check timed out!'; exit 1"
+                        bat '''@echo off
+                            echo Probing application health at http://localhost:8501/_stcore/health ...
+                            curl.exe --retry 10 --retry-delay 3 --retry-all-errors -s -f http://localhost:8501/_stcore/health
+                            if %ERRORLEVEL% EQU 0 (
+                                echo Application is Healthy and reachable!
+                                exit /b 0
+                            ) else (
+                                echo Application health check failed!
+                                exit /b 1
+                            )
                         '''
                     }
                 }
