@@ -1,0 +1,53 @@
+---
+- name: Deploy House Price Prediction Application Container
+  hosts: localhost
+  gather_facts: false
+  vars:
+    container_name: "house-price-predictor"
+    image_name: "house-price-predictor"
+    image_tag: "latest"
+    host_port: 8501
+    container_port: 8501
+
+  tasks:
+    - name: Check if container is already running
+      command: "docker ps -q -f name=^{{ container_name }}$"
+      register: running_container
+      changed_when: false
+      failed_when: false
+
+    - name: Stop running container
+      command: "docker stop {{ container_name }}"
+      when: running_container.stdout != ""
+      changed_when: true
+
+    - name: Check if container exists (stopped or running)
+      command: "docker ps -aq -f name=^{{ container_name }}$"
+      register: existing_container
+      changed_when: false
+      failed_when: false
+
+    - name: Remove existing container
+      command: "docker rm -f {{ container_name }}"
+      when: existing_container.stdout != ""
+      changed_when: true
+
+    - name: Run new Docker container
+      command: >
+        docker run -d
+        --name {{ container_name }}
+        -p {{ host_port }}:{{ container_port }}
+        --restart unless-stopped
+        {{ image_name }}:{{ image_tag }}
+      register: docker_run_result
+      changed_when: docker_run_result.rc == 0
+
+    - name: Verify container is running
+      command: "docker ps -f name=^{{ container_name }}$ -f status=running -q"
+      register: verify_container
+      failed_when: verify_container.stdout == ""
+      changed_when: false
+
+    - name: Display deployment status
+      debug:
+        msg: "Application successfully deployed in container '{{ container_name }}' on port {{ host_port }}."

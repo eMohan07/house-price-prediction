@@ -1,0 +1,16 @@
+.git
+.gitignore
+.pytest_cache
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.venv
+env/
+venv/
+notebooks/
+data/
+tests/
+ansible/
+Jenkinsfile
+README.md
